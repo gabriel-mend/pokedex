@@ -7,8 +7,10 @@ export default function Home({ data }) {
             <ul>
                 {data.map(({ entry_number, pokemon_species}) => (
                     <li key={entry_number}>
-                        <Link href={'/'}>
-                            {pokemon_species.name}
+                        <Link href={`/pokemon/${entry_number}`}>
+                            <a>
+                                {pokemon_species.name}
+                            </a>
                         </Link>
                     </li>
                 ))}
@@ -18,9 +20,8 @@ export default function Home({ data }) {
 }
 
 export async function getStaticProps() {
-    const data = await fetch('https://pokeapi.co/api/v2/pokedex/2/')
-                .then(responseOnServer => responseOnServer.json())
-                .then(responseOnObject => responseOnObject.pokemon_entries)
+    const res = await fetch('https://pokeapi.co/api/v2/pokedex/2/')
+    const { pokemon_entries: data } = await res.json()
 
     return {
       props: {
